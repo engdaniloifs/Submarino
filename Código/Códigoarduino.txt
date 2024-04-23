@@ -1,0 +1,63 @@
+#include <Servo.h>
+
+#define SeringaAberta 40
+
+#define SeringaFechada 180
+
+
+int x = 180;
+char dados;
+
+Servo myservo;  
+
+
+void setup() 
+{
+  Serial.begin(9600);
+  
+  myservo.attach(9);  
+  myservo.write(SeringaFechada);
+  delay(5000);
+}
+
+void loop() 
+{
+  myservo.write(x); 
+  while(Serial.available()>0)
+  {
+         
+        dados = Serial.read();
+        
+        Serial.println(dados);
+    
+        delay(15);
+  
+        switch(dados)
+        {
+          case 'A':
+            x = x - 10; 
+          break;
+          
+          case 'F':
+            x = x + 10;
+          break;
+          
+          case 'S':
+            x = SeringaFechada;
+          break;
+
+          case 'D':
+            x = SeringaAberta;
+          break;
+        }
+         
+  }
+  if(x < 40)
+  {
+     x = 40;
+  }
+  if(x > 180)
+  {
+     x = 180;
+  }   
+}
