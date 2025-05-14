@@ -156,6 +156,8 @@ void loop() {
     }  // força travamento até o reset
   }
   pos = constrain(pos, 0, 180);
+  delay(100);
+  Serial.println(pos);
 
   
 }
