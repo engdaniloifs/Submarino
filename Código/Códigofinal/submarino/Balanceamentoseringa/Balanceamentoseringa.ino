@@ -114,19 +114,6 @@ void setup() {
   }
   frente = 0;
   
-  // Sensor
-  long leitura_sensorinicio = 0;
-  const byte media = 10;
-
-  pinMode(SCK_pin, OUTPUT);
-  pinMode(OUT_pin, INPUT);
-
-  delay(500);
-  for (byte i = 0; i < media; i++) {
-    while (digitalRead(OUT_pin));
-    leitura_sensorinicio += lerSensor();
-  }
-  leitura_sensorinicio_media =  leitura_sensorinicio / media;
 }
 
 void loop() {
@@ -144,32 +131,18 @@ void loop() {
   
   static unsigned long tempo = millis();
   servo_write(pos);
-  if (!digitalRead(OUT_pin)) 
-  {
-    long leitura_temp = lerSensor();
-    float profundidade_temp = conversorSensor(leitura_temp);
-    float profundidade_com_pressao = profundidade_temp + angtest * 0.133;
-
-    if (abs(profundidade_com_pressao - profundidade) < 5.0) 
-    {
-      leitura_sensoratual = leitura_temp;
-      profundidade = profundidade_com_pressao;
-    }
-  } 
   
 
   ler_radio();
 
   if ((flutua) && ((millis()-tempo3)>500) ) {
 
-    setpoint_profundidade -= 0.5;
-    flutua = 0;
+    pos -= 5;
     tempo3 = millis();
   }
 
   if (afunda && ((millis()-tempo3)>500)) {
-    setpoint_profundidade += 0.5;
-    afunda = 0;
+    pos += 5;
     tempo3 = millis();
   }
 
@@ -182,27 +155,7 @@ void loop() {
 
     }  // força travamento até o reset
   }
+  pos = constrain(pos, 0, 180);
 
-  setpoint_profundidade = constrain(setpoint_profundidade, 0, 15);
   
-  if((millis()-tempo) > 2000)
-  {
-    tempo = millis();
-    float histerese = 1;
-    if (profundidade > setpoint_profundidade + histerese) {
-      pos = seringa_max;
-    } else if (profundidade < setpoint_profundidade - histerese) {
-      pos = seringa_min;
-    }
-    servo_write(pos);
-  } 
-  
-
-  if((millis() - tempo2) > 100)
-  {
-    Serial.print(profundidade,2);
-    Serial.print('\t');
-    Serial.println(setpoint_profundidade,2);
-    tempo2 = millis();
-  }
 }
