@@ -5,7 +5,7 @@ from collections import deque
 import time
 
 # === CONFIGURAÇÕES ===
-PORTA_SERIAL = 'COM5'
+PORTA_SERIAL = 'COM4'
 BAUD_RATE = 9600
 DURACAO_SEGUNDOS = 300  # 5 minutos
 INTERVALO_MS = 100

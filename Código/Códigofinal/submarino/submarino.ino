@@ -1,6 +1,3 @@
-#include <avr/wdt.h>
-
-
 
 // ############################################# SERVO ###################
 
@@ -176,11 +173,14 @@ void loop() {
     tempo3 = millis();
   }
 
-  if(frente)
-  {
-    wdt_enable(WDTO_15MS);  // Ativa watchdog com timeout de 15 ms
-    frente = 0;
-    while (true) {}  // força travamento até o reset
+  if(tras)
+  { 
+    tras = 0;
+    while (true) 
+    {
+      servo_write(seringa_inicio);
+
+    }  // força travamento até o reset
   }
 
   setpoint_profundidade = constrain(setpoint_profundidade, 0, 15);
