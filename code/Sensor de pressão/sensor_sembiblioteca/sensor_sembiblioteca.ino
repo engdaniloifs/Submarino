@@ -14,7 +14,7 @@ long leitura_sensorinicio_media = 0; // Valor médio inicial do sensor (offset p
 // Função para leitura bruta do sensor
 // -----------------------------
 long lerSensor() {
-  const byte GAIN = 1;
+  const byte GAIN = 3;
   byte data[3];
 
   // Leitura dos 3 bytes de dados
